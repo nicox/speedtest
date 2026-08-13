@@ -1,0 +1,22 @@
+# Serve the payload from the edge. A cache miss measures Cloudflare's path to
+# the origin as well as the circuit under test, which is not what an
+# acceptance run is trying to establish.
+/payload.bin
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: application/octet-stream
+  X-Robots-Tag: noindex
+  Access-Control-Allow-Origin: *
+
+/health
+  Cache-Control: no-store
+  Content-Type: text/plain; charset=utf-8
+  X-Robots-Tag: noindex
+
+# The landing page is public, so it gets the usual hardening. It loads no
+# scripts and no external resources, which keeps the policy simple.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Permissions-Policy: geolocation=(), camera=(), microphone=()

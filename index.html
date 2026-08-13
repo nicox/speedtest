@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>WAN Acceptance Reference Endpoint</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+    max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.25rem;
+  }
+  h1 { font-size: 1.5rem; margin-bottom: .25rem; }
+  p.lede { margin-top: 0; opacity: .75; }
+  table { border-collapse: collapse; width: 100%; margin: 1.25rem 0; }
+  th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid #8883; }
+  th { font-weight: 600; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
+  footer { margin-top: 2.5rem; font-size: .875rem; opacity: .7; }
+</style>
+</head>
+<body>
+  <h1>WAN Acceptance Reference Endpoint</h1>
+  <p class="lede">Infrastructure host. Not a public service.</p>
+
+  <p>
+    This site exists so that newly installed WAN circuits can have their
+    internet throughput measured against a fixed endpoint outside the
+    corporate network. It is used by the <code>acceptance</code> tool during
+    line handover.
+  </p>
+
+  <table>
+    <tr><th>Path</th><th>Purpose</th></tr>
+    <tr><td><code>/payload.bin</code></td><td>20 MiB incompressible file, fetched repeatedly to measure download throughput</td></tr>
+    <tr><td><code>/health</code></td><td>plain-text liveness check</td></tr>
+  </table>
+
+  <p>
+    The payload is fetched repeatedly across parallel connections rather than
+    downloaded once. On a gigabit circuit a single 20 MiB transfer completes
+    inside TCP slow start, which would measure the protocol ramp instead of
+    the line.
+  </p>
+
+  <p>
+    Measurements taken here reflect the path to the nearest Cloudflare
+    location, which may differ between sites and over time. The acceptance
+    tool records which location served each run so that later comparisons stay
+    honest.
+  </p>
+
+  <footer>
+    Contact your network team before changing anything here — recorded
+    acceptance results depend on this endpoint behaving consistently.
+  </footer>
+</body>
+</html>

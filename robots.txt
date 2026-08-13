@@ -1,0 +1,3 @@
+# Infrastructure endpoint, not content. Nothing here should be indexed.
+User-agent: *
+Disallow: /
